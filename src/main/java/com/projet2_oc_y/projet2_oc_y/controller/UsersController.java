@@ -1,12 +1,17 @@
 package com.projet2_oc_y.projet2_oc_y.controller;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projet2_oc_y.projet2_oc_y.model.Users;
+import com.projet2_oc_y.projet2_oc_y.security.JwtGenerer;
 import com.projet2_oc_y.projet2_oc_y.service.UsersService;
 
 
@@ -16,25 +21,53 @@ public class UsersController {
 	@Autowired
 	private UsersService userService;
 	
-	@GetMapping("/users")
-	public void getAllUsers(){
+	//route 1
+	@PostMapping("api/auth/register")
+	public ResponseEntity<?> reponseHttpCreationCompte(@RequestBody Users infoUser){
 		
-		Iterable<Users> lesUsers = userService.getAllUsersTest();
-		
-		for (Users unUser : lesUsers) {
-			
-			System.out.println(unUser.getEmail());
-			
+		if(!userService.verificationEmailUnique(infoUser)) {
+			return ResponseEntity.badRequest().body(new HashMap<>());
 		}
+		
+		String tokenJwt = JwtGenerer.genererLeTokenJwt(infoUser.getEmail());
+		
+		HashMap<String, String> body = new HashMap<>();
+		
+		body.put("token", tokenJwt);
+		
+		return ResponseEntity.ok(body);
 	}
 	
 	
 	
-	@PostMapping("/insererUser")
-	public void inser(@RequestBody Users unUser) {
+	@PostMapping("api/auth/login")
+	public ResponseEntity<?>reponseHttpConnectionCompte(@RequestBody Users infoDeConnection){
 		
-		userService.insertionUserEnBddTest(unUser);
+		String id = infoDeConnection.getEmail();
+		String mdp = infoDeConnection.getPassword();
+		
+		if(userService.verificationEmailEtMdpCorrect(id, mdp)) {
+			
+			String tokenJwt = JwtGenerer.genererLeTokenJwt(id);
+			
+			HashMap<String, String> body = new HashMap<>();
+			
+			body.put("token", tokenJwt);
+			
+			return ResponseEntity.ok(body);
+		}
+		
+		// si id ou mdp incorrect:
+		
+		HashMap<String, String> body = new HashMap<>();
+		
+		body.put("message", "error");
+		
+		return ResponseEntity.status(401).body(body);
+		
 		
 	}
+	
+	
 
 }
