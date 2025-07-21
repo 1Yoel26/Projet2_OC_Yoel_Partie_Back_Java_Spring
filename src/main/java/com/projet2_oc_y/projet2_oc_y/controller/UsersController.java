@@ -25,10 +25,12 @@ public class UsersController {
 	@PostMapping("api/auth/register")
 	public ResponseEntity<?> reponseHttpCreationCompte(@RequestBody Users infoUser){
 		
+		// si le mail est déjà pris en Bdd, retourn erreur:
 		if(!userService.verificationEmailUnique(infoUser)) {
 			return ResponseEntity.badRequest().body(new HashMap<>());
 		}
 		
+		// si il n'est pas pris, retourné le token
 		String tokenJwt = JwtGenerer.genererLeTokenJwt(infoUser.getEmail());
 		
 		HashMap<String, String> body = new HashMap<>();
