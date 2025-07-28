@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.projet2_oc_y.projet2_oc_y.model.Rentals;
 import com.projet2_oc_y.projet2_oc_y.model.Users;
 import com.projet2_oc_y.projet2_oc_y.repository.UsersRepository;
 
@@ -103,6 +104,14 @@ public class UsersService implements UserDetailsService {
 		
 		
 	}
+	
+	
+	public Optional<Users> afficherUnUser(int idUser) {
+		
+		return userRepo.findById(idUser);
+		
+	}
+
 	
 	
 }
