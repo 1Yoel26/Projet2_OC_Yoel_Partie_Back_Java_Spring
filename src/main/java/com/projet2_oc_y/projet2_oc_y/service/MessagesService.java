@@ -1,8 +1,10 @@
 package com.projet2_oc_y.projet2_oc_y.service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.projet2_oc_y.projet2_oc_y.model.Messages;
@@ -23,7 +25,18 @@ public class MessagesService {
 	private UsersRepository userRepo;
 	
 	
+	public Users infoUserConnecte(String email) {
+
+		return userRepo.findByEmail(email);
+	}
+	
+	
 	public void insertionMessage(Messages infoDuMessage) {
+		
+		
+		infoDuMessage.setCreatedAt(LocalDate.now());
+		infoDuMessage.setUpdatedAt(LocalDate.now());
+		
 		messageRepo.save(infoDuMessage);
 	}
 	
@@ -43,19 +56,5 @@ public class MessagesService {
 	
 	
 	
-	public String getEmail(int id_user) {
-		
-		String email_user = "";
-		
-		Optional<Users> infoUser = userRepo.findById(id_user);
-		
-		if(infoUser.isPresent()) {
-			email_user = infoUser.get().getEmail();
-		}
-		
-		return email_user;
-		
-		
-	}
-
+	
 }
