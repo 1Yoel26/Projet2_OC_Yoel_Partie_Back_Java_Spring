@@ -25,7 +25,7 @@ public class RentalsService {
 	}
 	
 	
-	public Rentals afficherUnRental(int idDuRental) {
+	public Optional<Rentals> afficherUnRental(int idDuRental) {
 		
 		return rentalRepo.findById(idDuRental);
 		
@@ -39,21 +39,20 @@ public class RentalsService {
 	
 	public boolean modificationRental(int idDuRentalAModifier, int idDuUser, Rentals nouvelleInfoDuRental) {
 		
-		Rentals rentalTrouveParIdRental = rentalRepo.findById(idDuRentalAModifier);
+		Rentals rentalTrouveParIdRentalEtIdUser = rentalRepo.findByIdAndOwnerId(idDuRentalAModifier, idDuUser);
 		
-		Rentals rentalTrouveParIdUserConnecte = rentalRepo.findByOwnerId(idDuUser);
 		
 		// si le rental existe pour cet id, et qu'il appartient bien a l'user connecté :
-		if(rentalTrouveParIdRental != null &&  rentalTrouveParIdUserConnecte != null) {
+		if(rentalTrouveParIdRentalEtIdUser != null) {
 			
-			rentalTrouveParIdUserConnecte.setName(nouvelleInfoDuRental.getName());
-			rentalTrouveParIdUserConnecte.setSurface(nouvelleInfoDuRental.getSurface());
-			rentalTrouveParIdUserConnecte.setPrice(nouvelleInfoDuRental.getPrice());
-			rentalTrouveParIdUserConnecte.setPicture(nouvelleInfoDuRental.getPicture());
-			rentalTrouveParIdUserConnecte.setDescription(nouvelleInfoDuRental.getDescription());
-			rentalTrouveParIdUserConnecte.setUpdatedAt(LocalDate.now());
+			rentalTrouveParIdRentalEtIdUser.setName(nouvelleInfoDuRental.getName());
+			rentalTrouveParIdRentalEtIdUser.setSurface(nouvelleInfoDuRental.getSurface());
+			rentalTrouveParIdRentalEtIdUser.setPrice(nouvelleInfoDuRental.getPrice());
+			rentalTrouveParIdRentalEtIdUser.setPicture(nouvelleInfoDuRental.getPicture());
+			rentalTrouveParIdRentalEtIdUser.setDescription(nouvelleInfoDuRental.getDescription());
+			rentalTrouveParIdRentalEtIdUser.setUpdatedAt(LocalDate.now());
 			
-			rentalRepo.save(rentalTrouveParIdUserConnecte);
+			rentalRepo.save(rentalTrouveParIdRentalEtIdUser);
 			
 			return true;
 		}

@@ -13,4 +13,6 @@ public interface UsersRepository extends CrudRepository<Users, Integer>{
 	
 	Users findByEmail(String emailAVerifier);
 	
+	Users findById(int idUser);
+	
 }

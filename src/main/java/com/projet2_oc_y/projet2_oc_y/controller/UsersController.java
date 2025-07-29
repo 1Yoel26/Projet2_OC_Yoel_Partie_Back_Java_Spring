@@ -136,7 +136,7 @@ public class UsersController {
 	@GetMapping("api/user/{idDuUser}")
 	public ResponseEntity<?> unRental(@PathVariable int idDuUser) {
 		
-		Optional<Users> unUser = userService.afficherUnUser(idDuUser);
+		Users unUser = userService.afficherUnUser(idDuUser);
 		
 		return ResponseEntity.ok(unUser);
 	}

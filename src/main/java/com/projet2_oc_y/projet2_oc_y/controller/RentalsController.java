@@ -45,7 +45,7 @@ public class RentalsController {
 	@GetMapping("api/rentals/{idDuRental}")
 	public ResponseEntity<?> unRental(@PathVariable int idDuRental) {
 		
-		Rentals unRental = rentalService.afficherUnRental(idDuRental);
+		Optional<Rentals> unRental = rentalService.afficherUnRental(idDuRental);
 		
 		return ResponseEntity.ok(unRental);
 	}

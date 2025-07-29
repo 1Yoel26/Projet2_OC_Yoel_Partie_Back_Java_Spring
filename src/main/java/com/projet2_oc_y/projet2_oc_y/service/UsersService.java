@@ -106,7 +106,7 @@ public class UsersService implements UserDetailsService {
 	}
 	
 	
-	public Optional<Users> afficherUnUser(int idUser) {
+	public Users afficherUnUser(int idUser) {
 		
 		return userRepo.findById(idUser);
 		
