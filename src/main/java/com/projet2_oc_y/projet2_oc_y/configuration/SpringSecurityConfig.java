@@ -1,5 +1,7 @@
 package com.projet2_oc_y.projet2_oc_y.configuration;
 
+import java.util.List;
+
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.projet2_oc_y.projet2_oc_y.service.UsersService;
@@ -33,7 +36,16 @@ public class SpringSecurityConfig {
 	@Bean
 	public SecurityFilterChain chaineDeFiltre(HttpSecurity http) throws Exception {
 		
+		// ajouter dedans le cross origin pour lier le front et le back.
 		return http
+				.cors(cors -> cors.configurationSource(requete -> {
+					CorsConfiguration config = new CorsConfiguration();
+					config.setAllowedOrigins(List.of("http://localhost:4200")); // Origine front Angular
+	                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // type de Http autorisé depuis angular
+	                config.setAllowedHeaders(List.of("Authorization", "Content-Type")); // pour envoyer le token jwt dans le header
+	                
+	                return config;
+				}))
 				.csrf( csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
