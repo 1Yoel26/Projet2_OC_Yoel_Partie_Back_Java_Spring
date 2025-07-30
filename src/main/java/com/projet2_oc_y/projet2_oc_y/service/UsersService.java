@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.projet2_oc_y.projet2_oc_y.dto.UserDto;
+import com.projet2_oc_y.projet2_oc_y.dto.UserDtoCreationCompte;
 import com.projet2_oc_y.projet2_oc_y.model.Rentals;
 import com.projet2_oc_y.projet2_oc_y.model.Users;
 import com.projet2_oc_y.projet2_oc_y.repository.UsersRepository;
@@ -30,10 +32,21 @@ public class UsersService implements UserDetailsService {
 	private UsersRepository userRepo;
 	
 	
-	public Users retourneUserConnecte(String email) {
+	public UserDto retourneUserConnecte(String email) {
 		
-		return userRepo.findByEmail(email);
+		Users userConnecte =  userRepo.findByEmail(email);
+			
+		// convertion en UserDto:
 		
+		UserDto userDto = new UserDto();
+		
+		userDto.setId(userConnecte.getId());
+		userDto.setName(userConnecte.getName());
+		userDto.setEmail(userConnecte.getEmail());
+		userDto.setCreatedAt(userConnecte.getCreatedAt());
+		userDto.setUpdatedAt(userConnecte.getUpdatedAt());
+		
+		return userDto;
 	}
 	
 	// fonction pour savoir si le mail existe deja en Bdd avant de creer ce nouveau compte
@@ -57,21 +70,31 @@ public class UsersService implements UserDetailsService {
 	}
 	
 	
-	public void insertionCompteBdd(Users infoDucompte) {
+	public void insertionCompteBdd(UserDtoCreationCompte infoDucompte) {
 		
+		// encodage du mot de passe :
 		String mdpEncoder;
+		
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		
 		mdpEncoder = infoDucompte.getPassword();
 		
 		mdpEncoder = bCryptPasswordEncoder.encode(mdpEncoder);
 		
-		infoDucompte.setPassword(mdpEncoder);
+		// Enregistrement du Users complet :
 		
-		infoDucompte.setCreatedAt(LocalDate.now());
-		infoDucompte.setUpdatedAt(LocalDate.now());
+		Users infoDuCompteComplet = new Users();
 		
-		this.userRepo.save(infoDucompte);
+		infoDuCompteComplet.setEmail(infoDucompte.getEmail());
+		infoDuCompteComplet.setName(infoDucompte.getName());
+		
+		infoDuCompteComplet.setPassword(mdpEncoder);
+		
+		infoDuCompteComplet.setCreatedAt(LocalDate.now());
+		infoDuCompteComplet.setUpdatedAt(LocalDate.now());
+		
+	
+		this.userRepo.save(infoDuCompteComplet);
 		
 	}
 	
@@ -106,9 +129,19 @@ public class UsersService implements UserDetailsService {
 	}
 	
 	
-	public Users afficherUnUser(int idUser) {
+	public UserDto afficherUnUser(int idUser) {
 		
-		return userRepo.findById(idUser);
+		Users unUser = userRepo.findById(idUser);
+		
+		UserDto unUserDto = new UserDto();
+		
+		unUserDto.setId(unUser.getId());
+		unUserDto.setName(unUser.getName());
+		unUserDto.setEmail(unUser.getEmail());
+		unUserDto.setCreatedAt(unUser.getCreatedAt());
+		unUserDto.setUpdatedAt(unUser.getUpdatedAt());
+		
+		return unUserDto;
 		
 	}
 

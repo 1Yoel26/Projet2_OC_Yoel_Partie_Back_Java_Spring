@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projet2_oc_y.projet2_oc_y.dto.RentalDto;
+import com.projet2_oc_y.projet2_oc_y.dto.UserDto;
 import com.projet2_oc_y.projet2_oc_y.model.Rentals;
 import com.projet2_oc_y.projet2_oc_y.model.Users;
 import com.projet2_oc_y.projet2_oc_y.service.RentalsService;
@@ -30,31 +32,11 @@ public class RentalsController {
 	@Autowired
 	private UsersService userService;
 	
-	@GetMapping("api/rentals")
-	public ResponseEntity<?> lesRentals() {
-		
-		List<Rentals> listeRentals = (List<Rentals>) rentalService.afficherLesRentals();
-		
-		Map<String, List<Rentals>> body = new HashMap<>();
-		body.put("rentals", listeRentals);
-		
-		return ResponseEntity.ok(body);
-	}
 	
-	
-	@GetMapping("api/rentals/{idDuRental}")
-	public ResponseEntity<?> unRental(@PathVariable int idDuRental) {
+	@PostMapping("/rentals")
+	public ResponseEntity<?> insertionRental(@RequestBody RentalDto infoDuRental, Authentication authentication){
 		
-		Optional<Rentals> unRental = rentalService.afficherUnRental(idDuRental);
-		
-		return ResponseEntity.ok(unRental);
-	}
-	
-	
-	@PostMapping("api/rentals")
-	public ResponseEntity<?> insertionRental(@RequestBody Rentals infoDuRental, Authentication authentication){
-		
-		Users unUser = userService.retourneUserConnecte(authentication.getName());
+		UserDto unUser = userService.retourneUserConnecte(authentication.getName());
 		
 		int idOwnerRental = unUser.getId();
 		
@@ -72,10 +54,10 @@ public class RentalsController {
 	}
 	
 
-	@PutMapping("api/rentals/{idDuRental}")
-	public ResponseEntity<?> insertionRental(@RequestBody Rentals infoDuRental, @PathVariable int idDuRental, Authentication authentication){
+	@PutMapping("/rentals/{idDuRental}")
+	public ResponseEntity<?> modificationRental(@RequestBody RentalDto infoDuRental, @PathVariable int idDuRental, Authentication authentication){
 		
-		Users unUser = userService.retourneUserConnecte(authentication.getName());
+		UserDto unUser = userService.retourneUserConnecte(authentication.getName());
 		
 		int idUserConnecte = unUser.getId();
 		
@@ -93,10 +75,31 @@ public class RentalsController {
 			return ResponseEntity.badRequest().body("Erreur d'id, ou données incorrect.");
 		}
 		
+	} // fin de la route
+	
+	
+	@GetMapping("/rentals")
+	public ResponseEntity<?> lesRentals() {
 		
+		List<Rentals> listeRentals = (List<Rentals>) rentalService.afficherLesRentals();
 		
+		Map<String, List<Rentals>> body = new HashMap<>();
+		body.put("rentals", listeRentals);
 		
-		
+		return ResponseEntity.ok(body);
 	}
+	
+	
+	
+	@GetMapping("/rentals/{idDuRental}")
+	public ResponseEntity<?> unRental(@PathVariable int idDuRental) {
+		
+		Optional<Rentals> unRental = rentalService.afficherUnRental(idDuRental);
+		
+		return ResponseEntity.ok(unRental);
+	}
+	
+	
+	
 	
 }

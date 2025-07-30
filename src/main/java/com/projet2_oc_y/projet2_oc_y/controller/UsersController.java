@@ -3,7 +3,6 @@ package com.projet2_oc_y.projet2_oc_y.controller;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projet2_oc_y.projet2_oc_y.dto.UserDto;
+import com.projet2_oc_y.projet2_oc_y.dto.UserDtoConnectionCompte;
+import com.projet2_oc_y.projet2_oc_y.dto.UserDtoCreationCompte;
 import com.projet2_oc_y.projet2_oc_y.model.Rentals;
 import com.projet2_oc_y.projet2_oc_y.model.Users;
 import com.projet2_oc_y.projet2_oc_y.service.JwtService;
@@ -36,8 +38,8 @@ public class UsersController {
 	
 	
 	
-	@PostMapping("api/auth/register")
-	public ResponseEntity<?> reponseHttpCreationCompte(@RequestBody Users infoCreationCompte){
+	@PostMapping("/auth/register")
+	public ResponseEntity<?> reponseHttpCreationCompte(@RequestBody UserDtoCreationCompte infoCreationCompte){
 		
 		String id = infoCreationCompte.getEmail();
 		
@@ -67,8 +69,8 @@ public class UsersController {
 	
 	
 	
-	@PostMapping("api/auth/login")
-	public ResponseEntity<?>reponseHttpConnectionCompte(@RequestBody Users infoConnectioCompte){
+	@PostMapping("/auth/login")
+	public ResponseEntity<?>reponseHttpConnectionCompte(@RequestBody UserDtoConnectionCompte infoConnectioCompte){
 		
 		// tentative de connection
 		try {
@@ -81,6 +83,8 @@ public class UsersController {
 		        );
 			
 			String tokenJwt = jwtService.genererLeTokenPourConnectionCompte(authentication);
+			
+			
 			
 			HashMap<String, String> body = new HashMap<>();
 	        body.put("token", tokenJwt);
@@ -104,7 +108,7 @@ public class UsersController {
 	} // fin de la route
 	
 	
-	@GetMapping("api/auth/me")
+	@GetMapping("/auth/me")
 	public ResponseEntity<?> retourneUserConnecte(Authentication authentication) {
 		
 			// si l'user n'est pas connecté:
@@ -117,7 +121,7 @@ public class UsersController {
 			// sinon, s'il est bien connecté
 			String email = authentication.getName();
 			
-			Users userConnecte = userService.retourneUserConnecte(email);
+			UserDto userConnecte = userService.retourneUserConnecte(email);
 			
 			// structure la réponse à retourner:
 		    Map<String, Object> body = new LinkedHashMap<>();
@@ -133,10 +137,10 @@ public class UsersController {
 	}
 	
 	
-	@GetMapping("api/user/{idDuUser}")
-	public ResponseEntity<?> unRental(@PathVariable int idDuUser) {
+	@GetMapping("/user/{idDuUser}")
+	public ResponseEntity<?> afficheUnUser(@PathVariable int idDuUser) {
 		
-		Users unUser = userService.afficherUnUser(idDuUser);
+		UserDto unUser = userService.afficherUnUser(idDuUser);
 		
 		return ResponseEntity.ok(unUser);
 	}

@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.projet2_oc_y.projet2_oc_y.dto.MessageDto;
 import com.projet2_oc_y.projet2_oc_y.model.Messages;
 import com.projet2_oc_y.projet2_oc_y.model.Users;
 import com.projet2_oc_y.projet2_oc_y.repository.MessagesRepository;
@@ -31,22 +31,28 @@ public class MessagesService {
 	}
 	
 	
-	public void insertionMessage(Messages infoDuMessage) {
+	public void insertionMessage(MessageDto infoDuMessage) {
 		
 		
-		infoDuMessage.setCreatedAt(LocalDate.now());
-		infoDuMessage.setUpdatedAt(LocalDate.now());
+		// creation du message complet:
+		Messages infoDuMessageComplet = new Messages();
 		
-		messageRepo.save(infoDuMessage);
+		infoDuMessageComplet.setRentalId(infoDuMessage.getRentalId());
+		infoDuMessageComplet.setUserId(infoDuMessage.getUserId());
+		infoDuMessageComplet.setMessage(infoDuMessage.getMessage());
+		
+		infoDuMessageComplet.setCreatedAt(LocalDate.now());
+		infoDuMessageComplet.setUpdatedAt(LocalDate.now());
+		
+		messageRepo.save(infoDuMessageComplet);
 	}
 	
 	
 	// validation du message
-	public boolean validationMessage(Messages infoMessages) {
+	public boolean validationMessage(MessageDto infoMessages) {
 		
-		boolean MessageValide = true;
-		
-		if(MessageValide) {
+		// si le message contient quelques choses, on valide le message :
+		if(infoMessages.getMessage().length() > 0) {
 			return true;
 		}
 		

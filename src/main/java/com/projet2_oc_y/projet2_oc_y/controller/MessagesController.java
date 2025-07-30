@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projet2_oc_y.projet2_oc_y.model.Messages;
+import com.projet2_oc_y.projet2_oc_y.dto.MessageDto;
+import com.projet2_oc_y.projet2_oc_y.dto.UserDto;
 import com.projet2_oc_y.projet2_oc_y.model.Users;
 import com.projet2_oc_y.projet2_oc_y.service.MessagesService;
 import com.projet2_oc_y.projet2_oc_y.service.UsersService;
@@ -23,11 +24,8 @@ public class MessagesController {
 	@Autowired
 	private UsersService userService;
 	
-	@PostMapping("api/messages")
-	public ResponseEntity<?> insertionMessage(@RequestBody Messages infoDuMessage, Authentication authentication){
-		
-		// question pour le mentor : c'est moi qui doit recuperer l'id_user, ou il est donné dans le body ? 
-		
+	@PostMapping("/messages")
+	public ResponseEntity<?> insertionMessage(@RequestBody MessageDto infoDuMessage, Authentication authentication){
 		
 		// si pas connecté, retourne erreur 403 automatiquement par Spring Security.
 		
@@ -36,7 +34,7 @@ public class MessagesController {
 		if(messageService.validationMessage(infoDuMessage)) {
 			
 			// recup de l'user connecté:
-			Users userConnecte = userService.retourneUserConnecte(authentication.getName());
+			UserDto userConnecte = userService.retourneUserConnecte(authentication.getName());
 			
 			// recup de son id:
 			int id_user_connecte = userConnecte.getId();
@@ -52,7 +50,6 @@ public class MessagesController {
 	        
 			
 			return ResponseEntity.ok(body);
-			
 			
 		}
 		// si connecté mais message non validé :

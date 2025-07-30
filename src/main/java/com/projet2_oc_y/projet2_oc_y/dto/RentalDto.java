@@ -1,0 +1,30 @@
+package com.projet2_oc_y.projet2_oc_y.dto;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.Column;
+import lombok.Data;
+
+
+@Data
+public class RentalDto {
+
+	private int id;
+	
+	private String name;
+	
+	private BigDecimal surface;
+	
+	private BigDecimal price;
+	
+	private String picture;
+	
+	private String description;
+	
+	@JsonProperty("owner_id") 
+	private int ownerId;
+	
+}
