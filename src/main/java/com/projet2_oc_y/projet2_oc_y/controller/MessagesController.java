@@ -15,6 +15,11 @@ import com.projet2_oc_y.projet2_oc_y.model.Users;
 import com.projet2_oc_y.projet2_oc_y.service.MessagesService;
 import com.projet2_oc_y.projet2_oc_y.service.UsersService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+@Tag(name = "Messages", description = "Opérations liées aux message : envois d'un message uniquement (avec insertion en base de donnée)")
 @RestController
 public class MessagesController {
 	
@@ -24,6 +29,7 @@ public class MessagesController {
 	@Autowired
 	private UsersService userService;
 	
+	@Operation(summary = "Enregistrement d'un message.", description = "Insertion en Bdd du message envoyé après avoir validé que le message n'était pas vide.")
 	@PostMapping("/messages")
 	public ResponseEntity<?> insertionMessage(@RequestBody MessageDto infoDuMessage, Authentication authentication){
 		

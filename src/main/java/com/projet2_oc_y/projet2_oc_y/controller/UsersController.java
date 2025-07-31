@@ -23,7 +23,11 @@ import com.projet2_oc_y.projet2_oc_y.model.Users;
 import com.projet2_oc_y.projet2_oc_y.service.JwtService;
 import com.projet2_oc_y.projet2_oc_y.service.UsersService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+
+@Tag(name = "Users", description = "Opérations liées aux comptes utilisateurs : connection, inscription ...")
 @RestController
 public class UsersController {
 	
@@ -37,7 +41,7 @@ public class UsersController {
 	private AuthenticationManager authenticationManager;
 	
 	
-	
+	@Operation(summary = "Enregistrement d'un nouveau compte utilisateur.", description = "Enregistrement d'un nouveau compte utilisateur après avoir vérifié que l'email de ce nouveau compte n'est pas déjà pris par un autre compte.")
 	@PostMapping("/auth/register")
 	public ResponseEntity<?> reponseHttpCreationCompte(@RequestBody UserDtoCreationCompte infoCreationCompte){
 		
@@ -68,7 +72,7 @@ public class UsersController {
 	}
 	
 	
-	
+	@Operation(summary = "Authentification à son compte utilisateur.", description = "Après avoir validé les infos d'authentification, génération d'un Token JWT afin de pouvoir accéder à toute les routes sécurisés dans l'application.")
 	@PostMapping("/auth/login")
 	public ResponseEntity<?>reponseHttpConnectionCompte(@RequestBody UserDtoConnectionCompte infoConnectioCompte){
 		
@@ -108,6 +112,7 @@ public class UsersController {
 	} // fin de la route
 	
 	
+	@Operation(summary = "Retourne les infos du compte utilisateur.", description = "Retourne les infos du compte utilisateur qui est connecté actuellement uniquement.")
 	@GetMapping("/auth/me")
 	public ResponseEntity<?> retourneUserConnecte(Authentication authentication) {
 		
@@ -137,6 +142,7 @@ public class UsersController {
 	}
 	
 	
+	@Operation(summary = "Retourne les infos d'un des comptes utilisateur.", description = "Retourne les infos de n'importe quel compte utilisateur existant.")
 	@GetMapping("/user/{idDuUser}")
 	public ResponseEntity<?> afficheUnUser(@PathVariable int idDuUser) {
 		

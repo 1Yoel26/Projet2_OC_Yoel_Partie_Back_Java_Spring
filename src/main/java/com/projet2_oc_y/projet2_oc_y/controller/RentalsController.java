@@ -22,6 +22,11 @@ import com.projet2_oc_y.projet2_oc_y.model.Users;
 import com.projet2_oc_y.projet2_oc_y.service.RentalsService;
 import com.projet2_oc_y.projet2_oc_y.service.UsersService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+@Tag(name = "Rentals", description = "Opérations liées aux locations : création, modification ...")
 @RestController
 public class RentalsController {
 	
@@ -32,7 +37,7 @@ public class RentalsController {
 	@Autowired
 	private UsersService userService;
 	
-	
+	@Operation(summary = "Enregistrement d'une location.", description = "Insertion en Bdd de la location (Rental) en ajoutant automatiquement certaines infos comme son id_user, sa date de création et de modification.")
 	@PostMapping("/rentals")
 	public ResponseEntity<?> insertionRental(@RequestBody RentalDto infoDuRental, Authentication authentication){
 		
@@ -53,7 +58,7 @@ public class RentalsController {
 		
 	}
 	
-
+	@Operation(summary = "Modification d'une location.", description = "Modification d'une location via son id dans l'url, après avoir validé que cet id de rental existe, et qu'il appartient bien à l'utilisateur connecté.")
 	@PutMapping("/rentals/{idDuRental}")
 	public ResponseEntity<?> modificationRental(@RequestBody RentalDto infoDuRental, @PathVariable int idDuRental, Authentication authentication){
 		
@@ -77,7 +82,7 @@ public class RentalsController {
 		
 	} // fin de la route
 	
-	
+	@Operation(summary = "Retourne toutes les locations.", description = "Retourne toutes les locations de la Bdd.")
 	@GetMapping("/rentals")
 	public ResponseEntity<?> lesRentals() {
 		
@@ -90,7 +95,7 @@ public class RentalsController {
 	}
 	
 	
-	
+	@Operation(summary = "Retourne une location.", description = "Retourne une location via son id_rental.")
 	@GetMapping("/rentals/{idDuRental}")
 	public ResponseEntity<?> unRental(@PathVariable int idDuRental) {
 		
