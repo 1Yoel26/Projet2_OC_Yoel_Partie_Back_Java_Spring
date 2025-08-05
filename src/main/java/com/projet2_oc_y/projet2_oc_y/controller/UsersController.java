@@ -72,7 +72,7 @@ public class UsersController {
 	}
 	
 	
-	@Operation(summary = "Authentification à son compte utilisateur.", description = "Après avoir validé les infos d'authentification, génération d'un Token JWT afin de pouvoir accéder à toute les routes sécurisés dans l'application.")
+	@Operation(summary = "Authentification à un compte utilisateur.", description = "Après avoir validé les infos d'authentification, génération d'un Token JWT afin de pouvoir accéder à toute les routes sécurisés dans l'application.")
 	@PostMapping("/auth/login")
 	public ResponseEntity<?>reponseHttpConnectionCompte(@RequestBody UserDtoConnectionCompte infoConnectioCompte){
 		
@@ -112,7 +112,7 @@ public class UsersController {
 	} // fin de la route
 	
 	
-	@Operation(summary = "Retourne les infos du compte utilisateur.", description = "Retourne les infos du compte utilisateur qui est connecté actuellement uniquement.")
+	@Operation(summary = "Retourne les infos du compte utilisateur connecté.", description = "Retourne les infos du compte utilisateur qui est connecté actuellement uniquement.")
 	@GetMapping("/auth/me")
 	public ResponseEntity<?> retourneUserConnecte(Authentication authentication) {
 		
@@ -142,7 +142,7 @@ public class UsersController {
 	}
 	
 	
-	@Operation(summary = "Retourne les infos d'un des comptes utilisateur.", description = "Retourne les infos de n'importe quel compte utilisateur existant.")
+	@Operation(summary = "Retourne les infos d'un des comptes utilisateurs.", description = "Retourne les infos de n'importe quel compte utilisateur existant.")
 	@GetMapping("/user/{idDuUser}")
 	public ResponseEntity<?> afficheUnUser(@PathVariable int idDuUser) {
 		

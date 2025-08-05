@@ -5,10 +5,12 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import lombok.Data;
 
 
+@Schema(name = "RentalDto", description = "DTO représentant une location")
 @Data
 public class RentalDto {
 

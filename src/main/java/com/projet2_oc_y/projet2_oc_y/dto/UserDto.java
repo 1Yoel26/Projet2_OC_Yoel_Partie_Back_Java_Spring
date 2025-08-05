@@ -4,8 +4,10 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+@Schema(name = "UserDto", description = "DTO représentant un utilisateur")
 @Data
 public class UserDto {
 	

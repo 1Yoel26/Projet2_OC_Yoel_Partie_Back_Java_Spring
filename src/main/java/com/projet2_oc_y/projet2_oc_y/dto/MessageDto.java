@@ -2,8 +2,10 @@ package com.projet2_oc_y.projet2_oc_y.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+@Schema(name = "MessageDto", description = "DTO représentant un message")
 @Data
 public class MessageDto {
 	
