@@ -51,7 +51,7 @@ public class SpringSecurityConfig {
 				.authorizeHttpRequests(
 						auth -> auth
 						.requestMatchers("/api/auth/login").permitAll() 
-						.requestMatchers("/auth/register").permitAll() 
+						.requestMatchers("/api/auth/register").permitAll() 
 						.requestMatchers("/Images/*").permitAll()
 						.requestMatchers(
 							    "/swagger-ui/**",
