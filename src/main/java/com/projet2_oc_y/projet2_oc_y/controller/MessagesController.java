@@ -30,7 +30,7 @@ public class MessagesController {
 	private UsersService userService;
 	
 	@Operation(summary = "Enregistrement d'un message.", description = "Insertion en Bdd du message envoyé après avoir validé que le message n'était pas vide.")
-	@PostMapping("/messages")
+	@PostMapping("/api/messages")
 	public ResponseEntity<?> insertionMessage(@RequestBody MessageDto infoDuMessage, Authentication authentication){
 		
 		// si pas connecté, retourne erreur 403 automatiquement par Spring Security.

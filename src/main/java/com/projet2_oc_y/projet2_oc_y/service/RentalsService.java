@@ -23,19 +23,40 @@ public class RentalsService {
 	
 	public Iterable<Rentals> afficherLesRentals() {
 		
-		return rentalRepo.findAll();
+		Iterable<Rentals> lesRentals = rentalRepo.findAll();
+		
+		for(Rentals unRental : lesRentals) {
+			
+			if(unRental.getPicture() != null && !unRental.getPicture().isEmpty()) {
+				unRental.setPicture("http://localhost:8080/Images/" + unRental.getPicture());
+			}
+			
+		}
+		
+		return lesRentals;
 		
 	}
 	
 	
 	public Optional<Rentals> afficherUnRental(int idDuRental) {
 		
-		return rentalRepo.findById(idDuRental);
+		Optional<Rentals> leRental = rentalRepo.findById(idDuRental);
 		
+		// si le rental existe ajoute le prefixe a l'image pour avoir l'url complete:
+		leRental.ifPresent(leRent -> {
+			if(leRent.getPicture() != null && !leRent.getPicture().isEmpty()) {
+				leRent.setPicture("http://localhost:8080/Images/" + leRent.getPicture());
+			}
+		});
+		
+		return leRental;
 	}
 	
 	
-	public void insertionRental(RentalDto infoDuRental, MultipartFile imageDuRental) {
+	public void insertionRental(RentalDto infoDuRental) {
+		
+		// récupération de l'image
+		MultipartFile imageDuRental = infoDuRental.getPicture();
 		
 		String nomImageDuRental = "";
 		
@@ -83,7 +104,7 @@ public class RentalsService {
 	}
 
 	
-	public boolean modificationRental(int idDuRentalAModifier, int idDuUser, RentalDto nouvelleInfoDuRental, MultipartFile nouvelleImageDuRental) {
+	public boolean modificationRental(int idDuRentalAModifier, int idDuUser, RentalDto nouvelleInfoDuRental) {
 		
 		// récupération des anciennes données de ce Rental avec l'id de l'url:
 		Rentals rentalTrouveParIdRentalEtIdUser = rentalRepo.findByIdAndOwnerId(idDuRentalAModifier, idDuUser);
@@ -92,35 +113,14 @@ public class RentalsService {
 		// si le rental existe pour cet id, et qu'il appartient bien a l'user connecté actuellement:
 		if(rentalTrouveParIdRentalEtIdUser != null) {
 			
-			// récuperation de l'ancienne image du rentals pour savoir si celle-ci à été modifier ou pas :
-			String ancienneImage = rentalTrouveParIdRentalEtIdUser.getPicture();
+			// on garde le nom de l'ancienne image car elle ne peut pas être modifié dans l'app angular :
+			String nomAncienneImage = rentalTrouveParIdRentalEtIdUser.getPicture();
 			
-			String nouvelleImage = nouvelleImageDuRental.getOriginalFilename();
-			
-			// si l'image à été modifier, suppression de l'ancienne et téléchargement de la nouvelle image:
-			if(!nouvelleImage.isEmpty() && nouvelleImage != ancienneImage) {
-				
-				// affectation de la nouvelle image l'objet nouvelleInfoDuRental pour la modification quelques lignes plus bas:
-				nouvelleInfoDuRental.setPicture(nouvelleImage);
-				
-				// Creation d'un objet TelechargementImage, pour utiliser dedans la fonction qui supprimera l'ancienne image et telechargera la nouvelle image sur le serveur:				TelechargementImage telechargerImage = new TelechargementImage();
-				TelechargementImage modifierImage = new TelechargementImage();
-				
-				// suppression de l'ancienne image:
-				modifierImage.suppressionImageSurLeServeur(ancienneImage);
-				
-				// telechargement de la nouvelle image:
-				modifierImage.telechargementImageSurLeServeur(nouvelleImageDuRental);
-				
-				
-			}else {
-				nouvelleInfoDuRental.setPicture(ancienneImage);
-			}
 			
 			rentalTrouveParIdRentalEtIdUser.setName(nouvelleInfoDuRental.getName());
 			rentalTrouveParIdRentalEtIdUser.setSurface(nouvelleInfoDuRental.getSurface());
 			rentalTrouveParIdRentalEtIdUser.setPrice(nouvelleInfoDuRental.getPrice());
-			rentalTrouveParIdRentalEtIdUser.setPicture(nouvelleInfoDuRental.getPicture());
+			rentalTrouveParIdRentalEtIdUser.setPicture(nomAncienneImage);
 			rentalTrouveParIdRentalEtIdUser.setDescription(nouvelleInfoDuRental.getDescription());
 			rentalTrouveParIdRentalEtIdUser.setUpdatedAt(LocalDate.now());
 			

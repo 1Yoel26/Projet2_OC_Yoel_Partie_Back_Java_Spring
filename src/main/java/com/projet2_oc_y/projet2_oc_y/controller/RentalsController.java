@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,10 +42,9 @@ public class RentalsController {
 	private UsersService userService;
 	
 	@Operation(summary = "Enregistrement d'une location.", description = "Insertion en Bdd de la location (Rental) en ajoutant automatiquement certaines infos comme son id_user, sa date de création et de modification.")
-	@PostMapping(value = "/rentals", consumes = {"multipart/form-data"})
+	@PostMapping(value = "/api/rentals", consumes = {"multipart/form-data"})
 	public ResponseEntity<?> insertionRental(
-			@RequestPart("keyInfoDuRental") RentalDto infoDuRental,
-			@RequestPart(value = "keyImage", required = false) MultipartFile imageDuRental,
+			@ModelAttribute RentalDto infoDuRental,
 			Authentication authentication){
 		
 		// récupération de l'user connecté:
@@ -56,25 +56,21 @@ public class RentalsController {
 		
 		
 		// insertion du Rental en Bdd:
-		rentalService.insertionRental(infoDuRental, imageDuRental);
+		rentalService.insertionRental(infoDuRental);
 		
 		
 		// retourne le message de retour:
 		HashMap<String, String> body = new HashMap<>();
         body.put("message", "Rental created !");
         
-		
 		return ResponseEntity.ok(body);
-		
 		
 	}
 	
-	
 	@Operation(summary = "Modification d'une location.", description = "Modification d'une location via son id dans l'url, après avoir validé que cet id de rental existe, et qu'il appartient bien à l'utilisateur connecté.")
-	@PutMapping(value = "/rentals/{idDuRental}", consumes = {"multipart/form-data"})
+	@PutMapping(value = "/api/rentals/{idDuRental}", consumes = {"multipart/form-data"})
 	public ResponseEntity<?> modificationRental( 
-			@RequestPart("keyInfoDuRental") RentalDto infoDuRental,
-			@RequestPart(value = "keyImage", required = false) MultipartFile imageDuRental,
+			@ModelAttribute RentalDto infoDuRental,
 			@PathVariable int idDuRental, 
 			Authentication authentication){
 		
@@ -83,7 +79,7 @@ public class RentalsController {
 		int idUserConnecte = unUser.getId();
 		
 		
-		boolean modifFaite = rentalService.modificationRental(idDuRental, idUserConnecte, infoDuRental, imageDuRental);
+		boolean modifFaite = rentalService.modificationRental(idDuRental, idUserConnecte, infoDuRental);
 		
 		
 		if(modifFaite) {
@@ -100,7 +96,7 @@ public class RentalsController {
 	} // fin de la route
 	
 	@Operation(summary = "Retourne toutes les locations.", description = "Retourne toutes les locations de la Bdd.")
-	@GetMapping("/rentals")
+	@GetMapping("/api/rentals")
 	public ResponseEntity<?> lesRentals() {
 		
 		List<Rentals> listeRentals = (List<Rentals>) rentalService.afficherLesRentals();
@@ -113,7 +109,7 @@ public class RentalsController {
 	
 	
 	@Operation(summary = "Retourne une location.", description = "Retourne une location via son id_rental.")
-	@GetMapping("/rentals/{idDuRental}")
+	@GetMapping("/api/rentals/{idDuRental}")
 	public ResponseEntity<?> unRental(@PathVariable int idDuRental) {
 		
 		Optional<Rentals> unRental = rentalService.afficherUnRental(idDuRental);

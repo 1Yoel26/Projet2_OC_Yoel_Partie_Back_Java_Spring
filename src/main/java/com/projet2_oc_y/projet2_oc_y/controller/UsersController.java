@@ -42,7 +42,7 @@ public class UsersController {
 	
 	
 	@Operation(summary = "Enregistrement d'un nouveau compte utilisateur.", description = "Enregistrement d'un nouveau compte utilisateur après avoir vérifié que l'email de ce nouveau compte n'est pas déjà pris par un autre compte.")
-	@PostMapping("/auth/register")
+	@PostMapping("/api/auth/register")
 	public ResponseEntity<?> reponseHttpCreationCompte(@RequestBody UserDtoCreationCompte infoCreationCompte){
 		
 		String id = infoCreationCompte.getEmail();
@@ -73,7 +73,7 @@ public class UsersController {
 	
 	
 	@Operation(summary = "Authentification à un compte utilisateur.", description = "Après avoir validé les infos d'authentification, génération d'un Token JWT afin de pouvoir accéder à toute les routes sécurisés dans l'application.")
-	@PostMapping("/auth/login")
+	@PostMapping("/api/auth/login")
 	public ResponseEntity<?>reponseHttpConnectionCompte(@RequestBody UserDtoConnectionCompte infoConnectioCompte){
 		
 		// tentative de connection
@@ -113,7 +113,7 @@ public class UsersController {
 	
 	
 	@Operation(summary = "Retourne les infos du compte utilisateur connecté.", description = "Retourne les infos du compte utilisateur qui est connecté actuellement uniquement.")
-	@GetMapping("/auth/me")
+	@GetMapping("/api/auth/me")
 	public ResponseEntity<?> retourneUserConnecte(Authentication authentication) {
 		
 			// si l'user n'est pas connecté:
@@ -143,7 +143,7 @@ public class UsersController {
 	
 	
 	@Operation(summary = "Retourne les infos d'un des comptes utilisateurs.", description = "Retourne les infos de n'importe quel compte utilisateur existant.")
-	@GetMapping("/user/{idDuUser}")
+	@GetMapping("/api/user/{idDuUser}")
 	public ResponseEntity<?> afficheUnUser(@PathVariable int idDuUser) {
 		
 		UserDto unUser = userService.afficherUnUser(idDuUser);
@@ -152,8 +152,4 @@ public class UsersController {
 	}
 	
 	
-	
-	
-	
-
 }

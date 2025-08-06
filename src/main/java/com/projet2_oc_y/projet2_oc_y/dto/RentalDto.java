@@ -3,6 +3,8 @@ package com.projet2_oc_y.projet2_oc_y.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +24,7 @@ public class RentalDto {
 	
 	private BigDecimal price;
 	
-	private String picture;
+	private MultipartFile picture;
 	
 	private String description;
 	

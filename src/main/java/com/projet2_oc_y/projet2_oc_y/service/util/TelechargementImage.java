@@ -19,7 +19,13 @@ public class TelechargementImage {
 			try {
 				
 				// chemin de telechargement des imgs (a partir de la racine du projet):
-				String cheminDeTelechargement = System.getProperty("user.dir") + File.separator +  "Images" + File.separator;
+				String cheminDeTelechargement = System.getProperty("user.dir")
+						+ File.separator + "src"
+						+ File.separator + "main"
+						+ File.separator + "resources"
+						+ File.separator + "static"
+						+ File.separator + "Images"
+						+ File.separator;
 				
 				// création du vrai chemin sur le serveur (s'il n'existe pas uniquement)
 				Files.createDirectories(Paths.get(cheminDeTelechargement));
@@ -64,7 +70,13 @@ public class TelechargementImage {
 			try {
 				
 				// chemin de telechargement des imgs (a partir de la racine du projet):
-				String cheminDuDossier = System.getProperty("user.dir") + File.separator +  "Images" + File.separator;
+				String cheminDuDossier = System.getProperty("user.dir")
+						+ File.separator + "src"
+						+ File.separator + "main"
+						+ File.separator + "resources"
+						+ File.separator + "static"
+						+ File.separator + "Images"
+						+ File.separator;
 				
 				// chemin de l'img a supprimer
 				Path cheminImage = Paths.get(cheminDuDossier + nomImageASupprimer);
