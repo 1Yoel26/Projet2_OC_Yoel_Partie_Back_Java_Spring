@@ -96,6 +96,7 @@ INSERT INTO `users` VALUES
 (13,'test@test.fr','Yoel ILLOUZ','$2a$10$ZwgmI6FM3M0EgPYH89/psevH6L1U27JwHFEapC11IKy2cppmvBf8i','2025-08-06','2025-08-06'),
 (14,'test1@test.fr','Jean Dubois','$2a$10$GhJENxvVSXLByRmPG/BZcOgm9PUOr/KOFEdQLM1IUf.RoEPbo7WrG','2025-08-06','2025-08-06');
 
+```
 
 ### Avec ce code Sql executer, 2 utilisateurs seront déjà créé :
 
