@@ -35,7 +35,7 @@ Cette API permet de :
 
 ### 1. Créer la base de données déjà remplis 
 
-Exécutez le script SQL suivant dans votre interface MySQL (ex : MySQL Workbench, phpMyAdmin, terminal...) pour créer la base de données `bd1` avec ses tables et données :
+#### Exécutez le script SQL suivant dans votre interface MySQL (ex : MySQL Workbench, phpMyAdmin, terminal...) pour créer la base de données `bd1` avec ses tables et données :
 
 ```sql
 CREATE DATABASE IF NOT EXISTS bd1;
@@ -106,6 +106,8 @@ INSERT INTO `users` VALUES
 
 ### 2 Cloner le projet back end Java Spring
 
+Dans votre terminal :
+
 - git clone https://github.com/1Yoel26/Projet2_OC_Yoel_Partie_Back_Java_Spring.git
 
 - cd votreChemin/Projet2_OC_Yoel_Partie_Back_Java_Spring
@@ -114,6 +116,8 @@ INSERT INTO `users` VALUES
 
 
 ### 3 Cloner le projet front end Angular 
+
+Dans votre terminal :
 
 - git clone https://github.com/1Yoel26/Projet2_OC_Yoel_Partie_Front_Angular.git
 
